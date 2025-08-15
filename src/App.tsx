@@ -1,7 +1,7 @@
 
 import './App.css'
 import FluidCursor from './components/FluidCursor'
-import { Navbar } from './components/NavBar'
+import { Navbar } from './components/Navbar'
 
 function App() {
 

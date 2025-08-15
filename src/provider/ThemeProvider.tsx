@@ -1,11 +1,12 @@
 // theme/AppThemeProvider.tsx  (components only)
 import React, { createContext, useState } from "react";
 import { ThemeProvider as StyledThemeProvider } from "styled-components";
+import { lightTheme } from "../theme/light";
+import { darkTheme } from "../theme/dark";
 
 export type ThemeMode = "light" | "dark";
 export interface ThemeContextType {
   mode: ThemeMode;
-  setMode: (m: ThemeMode) => void;
   toggleMode: () => void;
 }
 export const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -13,10 +14,10 @@ export const ThemeContext = createContext<ThemeContextType | undefined>(undefine
 export const AppThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [mode, setMode] = useState<ThemeMode>("light");
   const toggleMode = () => setMode(prev => (prev === "light" ? "dark" : "light"));
-  const theme = mode === "light" ? { background: "#fff", text: "#000" } : { background: "#000", text: "#fff" };
+  const theme =  mode === "light" ? lightTheme : darkTheme;
 
   return (
-    <ThemeContext.Provider value={{ mode, setMode, toggleMode }}>
+    <ThemeContext.Provider value={{ mode, toggleMode }}>
       <StyledThemeProvider theme={theme}>{children}</StyledThemeProvider>
     </ThemeContext.Provider>
   );
