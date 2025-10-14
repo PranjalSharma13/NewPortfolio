@@ -2,6 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import { Sun, Moon } from "lucide-react";
 import { useThemeMode } from "../hooks/useThemeModel";
+import WhiteLogo from '../assets/PS_Logo_White.png';
+import BlackLogo from '../assets/PS_Logo_Black.png'
 
 const Nav = styled.nav`
   display: flex;
@@ -11,17 +13,20 @@ const Nav = styled.nav`
   background: ${({ theme }) => theme.colors.bg};
   color: ${({ theme }) => theme.colors.text};
   transition: background 0.3s ease, color 0.3s ease;
-`;
-
-const Logo = styled.div`
-  font-size: 1.5rem;
-  font-weight: bold;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 `;
 
 const NavItems = styled.div`
   display: flex;
   align-items: center;
   gap: 1rem;
+`;
+
+const LogoImg = styled.img`
+  height: 32px;
+  user-select: none;
 `;
 
 const ToggleButton = styled.button`
@@ -35,12 +40,16 @@ const ToggleButton = styled.button`
   justify-content: center;
 `;
 
-export const Navbar: React.FC = () => {
+export const Navbar = () => {
   const { mode, toggleMode } = useThemeMode();
-
   return (
     <Nav>
-      <Logo>P</Logo>
+      <a href="#home" aria-label="Home">
+        <LogoImg
+          src={mode === "light" ? BlackLogo : WhiteLogo}
+          alt="PS Logo"
+        />
+      </a>
       <NavItems>
         <a href="#projects">Projects</a>
         <a href="#about">About</a>

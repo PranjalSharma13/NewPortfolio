@@ -1,19 +1,22 @@
 
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './App.css'
-import FluidCursor from './components/FluidCursor'
-import { Navbar } from './components/Navbar'
+import AppLayout from './layout/AppLayout'
+import { PATH } from './routes/path'
+import Home from './pages/Home'
 
 function App() {
-
   return (
-    <>
-    <Navbar />
-      <main style={{ padding: "2rem" }}>
-        <h1>Welcome to my portfolio</h1>
-        <p>This is a simple theme toggle example.</p>
-      </main>
-      <FluidCursor />
-    </>
+     <BrowserRouter>
+      <Routes>
+        <Route element={<AppLayout />}>
+          <Route path={PATH.HOME} element={<Home />} />
+          <Route path={PATH.CONTACT} element={<Home />} />
+          <Route path={PATH.PROJECTS} element={<Home />} />
+          <Route path="*" element={<h1>404</h1>} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   )
 }
 
