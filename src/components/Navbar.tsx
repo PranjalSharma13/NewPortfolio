@@ -4,6 +4,8 @@ import { Sun, Moon } from "lucide-react";
 import { useThemeMode } from "../hooks/useThemeModel";
 import WhiteLogo from '../assets/PS_Logo_White.png';
 import BlackLogo from '../assets/PS_Logo_Black.png'
+import { Link, NavLink } from "react-router-dom";
+import { PATH } from "../routes/path";
 
 const Nav = styled.nav`
   display: flex;
@@ -44,16 +46,16 @@ export const Navbar = () => {
   const { mode, toggleMode } = useThemeMode();
   return (
     <Nav>
-      <a href="#home" aria-label="Home">
+      <Link to={PATH.HOME} aria-label="Home">
         <LogoImg
           src={mode === "light" ? BlackLogo : WhiteLogo}
           alt="PS Logo"
         />
-      </a>
+      </Link>
       <NavItems>
-        <a href="#projects">Projects</a>
-        <a href="#about">About</a>
-        <a href="#contact">Contact</a>
+        <NavLink to={PATH.PROJECTS}>Projects</NavLink>
+        <NavLink to={PATH.HOME}>About</NavLink>
+        <NavLink to={PATH.HOME}>Contact</NavLink>
         <ToggleButton onClick={toggleMode} aria-label="Toggle theme">
           {mode === "light" ? <Moon /> : <Sun />}
         </ToggleButton>

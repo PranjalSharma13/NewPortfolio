@@ -4,6 +4,7 @@ import './App.css'
 import AppLayout from './layout/AppLayout'
 import { PATH } from './routes/path'
 import Home from './pages/Home'
+import Projects from './pages/Projects'
 
 function App() {
   return (
@@ -11,8 +12,8 @@ function App() {
       <Routes>
         <Route element={<AppLayout />}>
           <Route path={PATH.HOME} element={<Home />} />
-          <Route path={PATH.CONTACT} element={<Home />} />
-          <Route path={PATH.PROJECTS} element={<Home />} />
+          <Route path={PATH.CONTACT} element={<Projects />} />
+          <Route path={PATH.PROJECTS} element={<Projects />} />
           <Route path="*" element={<h1>404</h1>} />
         </Route>
       </Routes>
