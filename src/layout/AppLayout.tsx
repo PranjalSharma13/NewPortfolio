@@ -4,6 +4,7 @@ import { Navbar } from "../components/Navbar";
 import FluidCursor from "../components/FluidCursor";
 import Footer from "../components/Footer";
 import styled from "styled-components";
+import FloatingActions from "../components/FloatingActions";
 
 const Shell = styled.div`
   min-height: 100dvh;
@@ -24,6 +25,7 @@ export default function AppLayout() {
       </Main>
       <Footer />
       <FluidCursor />
+      <FloatingActions />
     </Shell>
   );
 }

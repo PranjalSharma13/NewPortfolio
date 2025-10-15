@@ -23,7 +23,7 @@ const FooterGrid = styled.div`
 
 const Left = styled.div`
   display: grid;
-  gap: 3rem;
+  gap: 1.5rem;
 `;
 
 const BigLogo = styled.img`

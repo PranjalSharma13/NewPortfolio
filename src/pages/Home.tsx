@@ -7,7 +7,7 @@ import styled, { keyframes } from "styled-components";
 const Home=() =>{
   const { mode } = useThemeMode();
   return (
-    <section>
+    <HomeWrapper>
       <img
         src={mode === "dark" ? Picture1 : Picture2}
         alt="Kawaii me on a laptop"
@@ -15,8 +15,9 @@ const Home=() =>{
       <Title>
       Hey, I’m Pranjal <Wave aria-hidden="true">👋</Wave>
     </Title>
-      <p>This is a simple theme toggle example.</p>
-    </section>
+      <Body>Talented ✨ Software Developer with  3 years of professional experience excelling in both backend and frontend development (full stack) to create comprehensive applications. Experienced in seamlessly integrating, rigorously testing, and fortifying enterprise applications, with a strong track record of providing robust support.</Body>
+      <Body>Proficient in constructing robust backend systems and intuitive user interfaces, leveraging Java, Spring Framework and java script libraries within Supply chain logistics , e-commerce and marketing domains Additionally, skilled in cross-platform mobile apps development using React Native. Hands-on experience with Kafka, ActiveMQ ,Docker and Shell Scripting.</Body>
+    </HomeWrapper>
   );
 }
 export default Home
@@ -44,5 +45,21 @@ const Wave = styled.span`
     animation: none;
   }
 `;
+const HomeWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  align-items: center;
+  margin: 3.5rem 0rem;
+  img {
+    width: 450px;
+    height: auto;
+    display: block;
+  }
+`;
+const Body = styled.div`
+ padding: 0rem 15rem;
+`;
+
 
 
