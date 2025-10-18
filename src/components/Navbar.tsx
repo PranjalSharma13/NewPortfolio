@@ -54,7 +54,7 @@ export const Navbar = () => {
       </Link>
       <NavItems>
         <NavLink to={PATH.PROJECTS}>Projects</NavLink>
-        <NavLink to={PATH.HOME}>About</NavLink>
+        <NavLink to={PATH.EXPERIENCE}>Experience</NavLink>
         <NavLink to={PATH.HOME}>Contact</NavLink>
         <ToggleButton onClick={toggleMode} aria-label="Toggle theme">
           {mode === "light" ? <Moon /> : <Sun />}

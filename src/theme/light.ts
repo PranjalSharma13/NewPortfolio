@@ -4,7 +4,8 @@ export const lightTheme = {
     bg: "#f9fafb",       // overall app background
     surface: "#ffffff",  // surfaces like cards/navbars
     text: "#111827",     // default text
-    linkColor: "646cff"
+    linkColor: "646cff",
+    borderColor:'#ffffff'
   },
 };
 export type AppTheme = typeof lightTheme;

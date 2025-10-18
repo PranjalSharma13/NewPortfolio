@@ -1,62 +1,18 @@
 // components/FloatingActions.tsx
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import styled from "styled-components";
 import { Globe, Download } from "lucide-react";
-import type { i18n as I18n } from "i18next";
 import { useThemeMode } from "../hooks/useThemeModel";
+import LanguagePickerModal from "./modal/LanguagePickerModal";
 
-/**
- * Language switcher tries common setups in this order:
- * 1) window.i18next (global react-i18next)
- * 2) imported i18n instance (if you wire it later)
- * 3) Fallback: store desired lang and reload so your app can read it on boot
- */
-
-// Type the global window so TS knows about i18next if you expose it
-declare global {
-  interface Window {
-    i18next?: {
-      changeLanguage: (lng: string) => Promise<void> | void;
-    };
-  }
-}
-
-// Optional i18n instance (if you export default from src/i18n.ts)
-let i18nInstance: I18n | undefined;
-try {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  i18nInstance = (require("../i18n").default ?? undefined) as I18n | undefined;
-} catch {
-  // no-op if not present
-}
 
 const CV_FILE_NAME = "PranjalSharmaN.pdf";
 const CV_PATH = "/assets/PranjalSharmaN.pdf";
 
 const FloatingActions = () => {
-  const mode= useThemeMode();
-  const changeToNepali = useCallback(() => {
-    const targetLang = "ne";
-
-    if (typeof window !== "undefined" && window.i18next?.changeLanguage) {
-      window.i18next.changeLanguage(targetLang);
-      return;
-    }
-    if (i18nInstance?.changeLanguage) {
-      i18nInstance.changeLanguage(targetLang);
-      return;
-    }
-
-    // Fallback: let the app read from localStorage on startup and set its language.
-    localStorage.setItem("app_lang", targetLang);
-
-    // Optional: notify listeners immediately
-    const evt = new CustomEvent("app:lang", { detail: targetLang });
-    window.dispatchEvent(evt);
-
-    // If your app only reads the lang on boot, consider:
-    // window.location.reload();
-  }, []);
+  // ❗ Your footer uses { mode, toggleMode }, so mirror that here:
+  const { mode } = useThemeMode(); // "light" | "dark"
+  const [openModal,setOpenModal]= useState(false);
 
   const downloadCV = useCallback(() => {
     const link = document.createElement("a");
@@ -70,27 +26,24 @@ const FloatingActions = () => {
   return (
     <Wrap>
       <Item>
-        <Fab
-          onClick={changeToNepali}
-          aria-label="Switch app language to Nepali"
-          title="Switch to Nepali"
-        >
+        <Fab mode={mode} aria-label="Switch language "  onClick={()=>{setOpenModal(true)}}>
           <Globe size={25} />
         </Fab>
-        <Tip>Switch to Nepali</Tip>
       </Item>
 
       <Item>
-        <Fab onClick={downloadCV} aria-label="Download my CV" title="Download CV">
+        <Fab mode={mode} aria-label="Download my CV"  onClick={downloadCV}>
           <Download size={25} />
         </Fab>
-        <Tip>Download CV</Tip>
       </Item>
+      {openModal && <LanguagePickerModal onClose={()=>setOpenModal(false)}/>}
     </Wrap>
   );
 };
 
 export default FloatingActions;
+
+// ——— styles ———
 
 const Wrap = styled.div`
   position: fixed;
@@ -111,45 +64,33 @@ const Item = styled.div`
   }
 `;
 
-
-const Fab = styled.button<{ asChild?: boolean }>`
+const Fab = styled.button<{ mode: "light" | "dark" | string }>`
   width: 56px;
   height: 56px;
   border-radius: 999px;
+  border: 1px solid ${({ mode }) => (mode === "light" ? "rgba(0,0,0,0.08)" : "rgba(134, 130, 130, 0.08)")};
+  cursor: pointer;
   display: inline-flex;
   align-items: center;
-  border: none;
-  cursor: pointer;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  justify-content: center;
+  line-height: 0;
+  background: ${({theme }) =>theme?.colors?.bg};
+  color: ${({theme }) =>theme?.colors?.text};
+  box-shadow: ${({ mode }) =>
+    mode === "light"
+      ? "0 8px 24px rgba(80, 79, 79, 0.1)"
+      : "0 8px 24px rgba(0,0,0,0.18)"};
+  transition: transform .15s ease, box-shadow .15s ease, background .25s ease, color .25s ease;
+
   &:hover {
     transform: translateY(-1px);
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
+    box-shadow: ${({ mode }) =>
+      mode === "light"
+        ? "0 12px 28px rgba(0,0,0,0.12)"
+        : "0 12px 28px rgba(0,0,0,0.22)"};
   }
+  &:active { transform: translateY(0); }
+
+  svg { display: block; pointer-events: none; }
 `;
 
-const Tip = styled.div.attrs({ "data-tip": true })`
-  position: absolute;
-  right: 64px; /* sits left of the button */
-  top: 50%;
-  transform: translateY(-50%);
-  background: ${({ theme }) => theme?.colors?.bg ?? "rgba(17, 24, 39, 0.95)"};
-  color: ${({ theme }) => theme?.colors?.text ?? "#fff"};
-  padding: 6px 10px;
-  border-radius: 8px;
-  font-size: 12px;
-  white-space: nowrap;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.12s ease, transform 0.12s ease;
-
-  &::after {
-    content: "";
-    position: absolute;
-    right: -6px;
-    top: 50%;
-    transform: translateY(-50%) rotate(45deg);
-    width: 10px;
-    height: 10px;
-    background: inherit;
-  }
-`;
