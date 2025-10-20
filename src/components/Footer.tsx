@@ -6,6 +6,7 @@ import { useThemeMode } from "../hooks/useThemeModel";
 import WhiteLogo from "../assets/PS_Logo_White.png";
 import BlackLogo from "../assets/PS_Logo_Black.png";
 import { PATH } from "../routes/path";
+import { useTranslation } from "react-i18next";
 import type { AnchorHTMLAttributes } from "react";
 
 const FooterRoot = styled.footer`
@@ -81,6 +82,7 @@ const Ext = (props: AnchorHTMLAttributes<HTMLAnchorElement>) => (
 
 export default function Footer() {
   const { mode } = useThemeMode();
+  const { t } = useTranslation();
   const year = new Date().getFullYear();
 
   return (
@@ -124,8 +126,8 @@ export default function Footer() {
           <Copy>© {year} Pranjal Sharma. All rights reserved.</Copy>
         </Left>
         <Right aria-label="Footer navigation">
-          <NavLink to={PATH.PROJECTS}>Projects</NavLink>
-          <NavLink to={PATH.CONTACT}>Contact</NavLink>
+          <NavLink to={PATH.PROJECTS}>{t("nav.projects")}</NavLink>
+          <NavLink to={PATH.CONTACT}>{t("nav.contact")}</NavLink>
         </Right>
       </FooterGrid>
     </FooterRoot>

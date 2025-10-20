@@ -6,6 +6,7 @@ import WhiteLogo from '../assets/PS_Logo_White.png';
 import BlackLogo from '../assets/PS_Logo_Black.png'
 import { Link, NavLink } from "react-router-dom";
 import { PATH } from "../routes/path";
+import { useTranslation } from "react-i18next";
 
 const Nav = styled.nav`
   display: flex;
@@ -44,6 +45,7 @@ const ToggleButton = styled.button`
 
 export const Navbar = () => {
   const { mode, toggleMode } = useThemeMode();
+  const { t } = useTranslation();
   return (
     <Nav>
       <Link to={PATH.HOME} aria-label="Home">
@@ -53,9 +55,9 @@ export const Navbar = () => {
         />
       </Link>
       <NavItems>
-        <NavLink to={PATH.PROJECTS}>Projects</NavLink>
-        <NavLink to={PATH.EXPERIENCE}>Experience</NavLink>
-        <NavLink to={PATH.HOME}>Contact</NavLink>
+        <NavLink to={PATH.PROJECTS}>{t("nav.projects")}</NavLink>
+        <NavLink to={PATH.EXPERIENCE}>{t("nav.experience")}</NavLink>
+        <NavLink to={PATH.HOME}>{t("nav.contact")}</NavLink>
         <ToggleButton onClick={toggleMode} aria-label="Toggle theme">
           {mode === "light" ? <Moon /> : <Sun />}
         </ToggleButton>

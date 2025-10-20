@@ -34,4 +34,5 @@ const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px 14px;
+  margin-bottom: 32px;
 `;

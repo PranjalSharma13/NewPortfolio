@@ -26,9 +26,11 @@ const Modal = ({ onClose, children }:Props) => {
   return (
     <Overlay>
       <Dialog ref={dialogRef} role="dialog" aria-modal="true">
-        <CloseBtn aria-label="Close" onClick={onClose} $mode={mode}>
-          <X size={18} />
-        </CloseBtn>
+        <Header>
+          <CloseBtn aria-label="Close" onClick={onClose} mode={mode}>
+            <X size={18} />
+          </CloseBtn>
+        </Header>
         {children}
       </Dialog>
     </Overlay>
@@ -55,10 +57,20 @@ const Dialog = styled.div`
   position: relative; padding: 20px 18px 16px;
 `;
 
-const CloseBtn = styled.button<{ $mode?: "light" | "dark" }>`
-  position: absolute; top: 10px; right: 10px;
+const CloseBtn = styled.button<{ mode?: "light" | "dark" }>`
+  position: absolute; top: -10px; right: 0px;
   border: none; background: transparent; color: inherit; cursor: pointer;
   padding: 6px; border-radius: 8px;
-  &:hover  { background: ${({ $mode }) => $mode === "dark" ? "rgba(255,255,255,0.10)" : "rgba(127,127,127,0.12)"}; }
-  &:active { background: ${({ $mode }) => $mode === "dark" ? "rgba(255,255,255,0.16)" : "rgba(127,127,127,0.18)"}; }
+  &:hover  { background: ${({ mode }) => mode === "dark" ? "rgba(255,255,255,0.10)" : "rgba(127,127,127,0.12)"}; }
+  &:active { background: ${({ mode }) => mode === "dark" ? "rgba(255,255,255,0.16)" : "rgba(127,127,127,0.18)"}; }
+`;
+
+const Header = styled.div`
+  position: sticky;
+  top: 600;
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px 10px 0 10px;
+  z-index: 1;
+  background: inherit;
 `;
