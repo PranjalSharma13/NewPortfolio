@@ -5,7 +5,7 @@ import type { YearItem } from "../data/Experience";
 
 
 export type TimelineProps = {
-  data: YearItem[];
+    data: YearItem[];
 };
 
 // ---------- Layout ----------
@@ -15,65 +15,59 @@ const Wrap = styled.section`
   --muted: #64748b; /* slate-500 */
   --brand: #0ea5e9; /* sky-500 */
 
-  max-width: 1200px;
   margin: 5rem 0rem;
-  padding: 48px 20px 80px;
-  color:${({theme}) => theme.colors.text};
-  display: grid;
-  grid-template-columns: 320px 1fr;
-  gap: 28px;
-
-  @media (max-width: 880px) {
-    grid-template-columns: 1fr;
-  }
+  color:${({ theme }) => theme.colors.text};
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 10rem;
 `;
 
-const Heading = styled.h1`
-  grid-column: 1 / -1;
-  margin: 0 0 8px;
-  font-size: clamp(1.5rem, 0.7rem + 2.5vw, 2.2rem);
-`;
 
-// Left rail host
 const Rail = styled.div`
   position: relative;
   padding-left: 32px;
-  min-height: 520px;
 
-  @media (max-width: 880px) {
-    min-height: 420px;
-  }
 `;
 
-// The vertical line pinned to the left of the rail
 const Line = styled.div`
   position: absolute;
-  left: 12px; /* keeps line near the left edge of the page */
+  left: 12px;
   top: 0;
   bottom: 0;
   width: 2px;
   background: var(--line);
 `;
 
-// Container that will hold the year markers
 const YearList = styled.ul`
   list-style: none;
-  margin: 0; padding: 0;
+  margin: 0;
+  padding: 0;
   position: relative;
   display: grid;
-  gap: 42px; /* vertical spacing between year nodes */
+  gap: 7.5rem;
+  &::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 1.25rem;
+    bottom: 1.25rem;
+    width: 2px;
+    background: var(--line);
+  }
 `;
+
 
 const YearItemLi = styled.li`
   position: relative;
 `;
 
-// A marker dot on the line
 const Dot = styled.span<{ active?: boolean }>`
   position: absolute;
-  left: -20px; /* so it sits on the line at x=12px */
+  left: -28px;
   top: 10px;
-  width: 14px; height: 14px; border-radius: 999px;
+  width: 16px; height: 16px; border-radius: 999px;
   background: #fff; border: 2px solid var(--line);
   ${({ active }) => active && css`border-color: var(--brand); box-shadow: 0 0 0 4px rgba(14,165,233,.18);`}
 `;
@@ -132,64 +126,61 @@ const Chip = styled.span`
 
 // ---------- Component ----------
 export default function Experience({ data }: TimelineProps) {
-  // sort years descending (latest at bottom looks natural on a vertical rail)
-  const years = useMemo(() => [...data].sort((a,b) => a.year - b.year), [data]);
-  const [activeYear, setActiveYear] = useState<number>(years[years.length - 1]?.year);
+    // sort years descending (latest at bottom looks natural on a vertical rail)
+    const years = useMemo(() => [...data].sort((a, b) => a.year - b.year), [data]);
+    const [activeYear, setActiveYear] = useState<number>(years[years.length - 1]?.year);
 
-  const active = years.find(y => y.year === activeYear);
+    const active = years.find(y => y.year === activeYear);
 
-  return (
-    <Wrap aria-labelledby="timeline-heading">
-      <Heading id="timeline-heading">Timeline</Heading>
-      {/* LEFT: rail */}
-      <Rail>
-        <Line />
-        <YearList>
-          {years.map((y, idx) => {
-            const side: "left" | "right" = idx % 2 === 0 ? "left" : "right"; // 2021 left, 2022 right, ...
-            const isActive = y.year === activeYear;
-            return (
-              <YearItemLi key={y.year}>
-                <Dot aria-hidden active={isActive} />
-                <YearButton
-                  side={side}
-                  active={isActive}
-                  aria-pressed={isActive}
-                  onClick={() => setActiveYear(y.year)}
-                  title={`Show ${y.year} experience`}
-                >
-                  {y.year}
-                </YearButton>
-              </YearItemLi>
-            );
-          })}
-        </YearList>
-      </Rail>
+    return (
+        <Wrap aria-labelledby="timeline-heading">
+            <Rail>
+                <Line />
+                <YearList>
+                    {years.map((y, idx) => {
+                        const side: "left" | "right" = idx % 2 === 0 ? "left" : "right"; // 2021 left, 2022 right, ...
+                        const isActive = y.year === activeYear;
+                        return (
+                            <YearItemLi key={y.year}>
+                                <Dot aria-hidden active={isActive} />
+                                <YearButton
+                                    side={side}
+                                    active={isActive}
+                                    aria-pressed={isActive}
+                                    onClick={() => setActiveYear(y.year)}
+                                    title={`Show ${y.year} experience`}
+                                >
+                                    {y.year}
+                                </YearButton>
+                            </YearItemLi>
+                        );
+                    })}
+                </YearList>
+            </Rail>
 
-      {/* RIGHT: details for active year */}
-      <Detail role="region" aria-live="polite" aria-label={`Details for ${active?.year}`}>
-        {active ? (
-          <div>
-            {active.company && <Company>{active.company}</Company>}
-            {active.role && <Role>{active.role}</Role>}
-            {active.locationDate && <Meta>{active.locationDate}</Meta>}
+            {/* RIGHT: details for active year */}
+            <Detail role="region" aria-live="polite" aria-label={`Details for ${active?.year}`}>
+                {active ? (
+                    <div>
+                        {active.company && <Company>{active.company}</Company>}
+                        {active.role && <Role>{active.role}</Role>}
+                        {active.locationDate && <Meta>{active.locationDate}</Meta>}
 
-            <Bullets>
-              {active.bullets.map((b, i) => <li key={i}>{b}</li>)}
-            </Bullets>
+                        <Bullets>
+                            {active.bullets.map((b, i) => <li key={i}>{b}</li>)}
+                        </Bullets>
 
-            {active.stack && active.stack.length > 0 && (
-              <StackRow>
-                {active.stack.map(s => <Chip key={s}>{s}</Chip>)}
-              </StackRow>
-            )}
-          </div>
-        ) : (
-          <div>Select a year to view experience.</div>
-        )}
-      </Detail>
-    </Wrap>
-  );
+                        {active.stack && active.stack.length > 0 && (
+                            <StackRow>
+                                {active.stack.map(s => <Chip key={s}>{s}</Chip>)}
+                            </StackRow>
+                        )}
+                    </div>
+                ) : (
+                    <div>Select a year to view experience.</div>
+                )}
+            </Detail>
+        </Wrap>
+    );
 }
 
-// ---------- Example local data (you can delete this and pass props instead) ----------
