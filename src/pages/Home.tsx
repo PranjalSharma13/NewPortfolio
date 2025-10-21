@@ -51,7 +51,7 @@ const HomeWrapper = styled.div`
   flex-direction: column;
   gap: 0.6rem;
   align-items: center;
-  margin: 4.5rem 0rem;
+  margin: 5rem 0rem;
   img {
     width: 450px;
     height: auto;

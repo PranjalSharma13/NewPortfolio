@@ -68,7 +68,7 @@ export default Projects;
 
 
 const Grid = styled.div`
-  margin: 4.5rem 2rem;
+  margin: 5rem 2rem;
   display: grid;
   gap: 6rem;
   grid-template-columns: repeat(auto-fit, minmax(495px, 1fr));
