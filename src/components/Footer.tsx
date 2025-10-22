@@ -73,7 +73,7 @@ const Right = styled.nav`
     color: ${({ theme }) => theme.colors.linkColor};
     opacity: 0.9;
   }
-  a.active { text-decoration: underline; opacity: 1; }
+  a.active { text-decoration: none; opacity: 1; }
 `;
 
 const Ext = (props: AnchorHTMLAttributes<HTMLAnchorElement>) => (
@@ -128,6 +128,7 @@ export default function Footer() {
         <Right aria-label="Footer navigation">
           <NavLink to={PATH.PROJECTS}>{t("nav.projects")}</NavLink>
           <NavLink to={PATH.CONTACT}>{t("nav.contact")}</NavLink>
+          <NavLink to={PATH.EXPERIENCE}>{t("nav.experience")}</NavLink>
         </Right>
       </FooterGrid>
     </FooterRoot>
