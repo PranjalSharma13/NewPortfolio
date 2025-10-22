@@ -52,7 +52,7 @@ export const experienceData: YearItem[] = [
     {
         year: 2025,
         company: "EULERITY",
-        role: "Web Developer Intern",
+        role: "Web Developer",
         locationDate: "NYC • 01/2025 – Present",
         bullets: [
             "Refactored into a reusable component library (framework-light) for maintainability.",

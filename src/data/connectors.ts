@@ -26,3 +26,22 @@ export const TARGETS = [
   { x: 800, y: 220, seed: 3 },
   { x: 790, y: 410, seed: 4 },
 ];
+
+
+export function pillPos(target: { x: number; y: number }, gapPx = 26) {
+  const vx = target.x - CENTER.x;
+  const vy = target.y - CENTER.y;
+  const len = Math.hypot(vx, vy) || 1;
+  const nx = vx / len;
+  const ny = vy / len;
+
+  // boost gap for left side (x < center)
+  const boost = target.x < CENTER.x ? 18 : 0; // ← tweak this
+  const dx = nx * (gapPx + boost);
+  const dy = ny * (gapPx + boost);
+
+  return {
+    left: `calc(${(target.x / 1000) * 100}% + ${dx}px)`,
+    top:  `calc(${(target.y /  600) * 100}% + ${dy}px)`,
+  };
+}

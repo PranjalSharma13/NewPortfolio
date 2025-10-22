@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { Mail, Twitter, Github, Calendar } from "lucide-react";
 import ContactAvatar from "../assets/Pkawaii.png";
-import { CENTER, curvePath, TARGETS } from "../data/connectors";
+import { CENTER, curvePath, pillPos, TARGETS } from "../data/connectors";
 
 const Contact = () => {
     return (
@@ -22,27 +22,27 @@ const Contact = () => {
                 <Center>
                     <Headshot src={ContactAvatar} alt="Pranjal avatar" />
                 </Center>
-
-                {/* Pills */}
-                <Pill style={{ left: "8%", top: "26%" }} href="mailto:pranjal.sharm98@gmail.com">
-                    <Mail size={18} />
+                {/* Pills — positioned from TARGETS so they hug the curve ends */}
+                <Pill style={pillPos(TARGETS[0],94)} href="mailto:pranjal.sharm98@gmail.com" target="_blank">
+                    <Mail size={20} />
                     <span>Email</span>
                 </Pill>
 
-                <Pill style={{ left: "9%", bottom: "14%" }} href="https://calendly.com/">
-                    <Calendar size={18} />
+                <Pill style={{ ...pillPos(TARGETS[1], 135), marginTop: "-40px" }}  href="https://calendly.com/" target="_blank">
+                    <Calendar size={20} />
                     <span>Calendly</span>
                 </Pill>
 
-                <Pill style={{ right: "8%", top: "26%" }} href="https://x.com/">
-                    <Twitter size={18} />
+                <Pill style={pillPos(TARGETS[2])} href="https://x.com/" target="_blank">
+                    <Twitter size={20} />
                     <span>DM</span>
                 </Pill>
 
-                <Pill style={{ right: "9%", bottom: "14%" }} href="https://github.com/PranjalSharma13">
-                    <Github size={18} />
+                <Pill style={pillPos(TARGETS[3])} href="https://github.com/PranjalSharma13" target="_blank">
+                    <Github size={20} />
                     <span>GitHub</span>
                 </Pill>
+
             </Graph>
         </Wrapper>
     );
@@ -55,7 +55,6 @@ export default Contact;
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
   align-items: center;
   margin: 5rem 0;
 `;
@@ -78,9 +77,8 @@ const Graph = styled.section`
 const Connectors = styled.svg`
   position: absolute; inset: 0; pointer-events: none;
 
-  /* soft halo under the main stroke */
-  .halo { stroke:"#60a5fa"; stroke-opacity: .18; stroke-width: 8; }
-  .line { stroke:"#60a5fa"; stroke-opacity: .65; stroke-width: 3; }
+  .halo { stroke: #60a5fa; stroke-opacity: .18; stroke-width: 8; }
+  .line { stroke: #60a5fa; stroke-opacity: .65; stroke-width: 3; }
   path { fill: none; stroke-linecap: round; }
 `;
 
@@ -96,7 +94,7 @@ const Center = styled.div`
   background: ${({ theme }) => theme.colors?.bg ?? "#0b1020"};
   box-shadow:
     0 10px 30px rgba(0,0,0,.18),
-    inset 0 0 0 2px ${({ theme }) => theme.colors?.accent ?? "#1772a3"};
+    inset 0 0 0 2px "#60a5fa";
 `;
 
 const Headshot = styled.img`
@@ -104,28 +102,32 @@ width: 100%;
   border-radius: 50%;
   object-fit: cover;
   display: block;
+    border: 1px solid #60a5fa;
 `;
 
 const Pill = styled.a`
   position: absolute;
   display: inline-flex;
   align-items: center;
-  gap: 0.55rem;
-  padding: 0.6rem 0.9rem;
+  gap: 0.65rem;                /* a bit more breathing room */
+  padding: 0.72rem 1rem;       /* bigger pill */
   border-radius: 999px;
   text-decoration: none;
   color: ${({ theme }) => theme.colors?.text ?? "#111827"};
   background: ${({ theme }) => theme.colors?.bg ?? "#fff"};
-  box-shadow: 0 8px 20px rgba(0,0,0,.08), inset 0 0 0 2px ${({ theme }) => theme.colors?.accent ?? "#60a5fa"}33;
+  box-shadow: 0 10px 24px rgba(0,0,0,.10),
+              inset 0 0 0 2px "#60a5fa" 33;
   transition: transform .15s ease, box-shadow .15s ease, opacity .15s ease;
-  opacity: 0.95;
+  opacity: 0.97;
 
   &:hover {
     transform: translateY(-1px);
-    box-shadow: 0 12px 26px rgba(0,0,0,.10), inset 0 0 0 2px ${({ theme }) => theme.colors?.accent ?? "#60a5fa"}55;
+    box-shadow: 0 14px 30px rgba(0,0,0,.12),
+                inset 0 0 0 2px "#60a5fa" 55;
     opacity: 1;
   }
 
-  svg { flex: 0 0 auto; }
-  span { font-weight: 600; }
+  svg { width: 20px; height: 20px; }   /* ensure larger icon even if size prop omitted */
+  span { font-weight: 650; font-size: 0.975rem; }
 `;
+

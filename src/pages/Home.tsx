@@ -11,7 +11,7 @@ const Home=() =>{
   return (
     <HomeWrapper>
       <img
-        src={mode === "dark" ? Picture1 : Picture2}
+        src={mode === "dark" ? Picture2 : Picture1}
       />
       <Title>
       {t("home.title", { wave: "" })} <Wave aria-hidden="true">👋</Wave>
