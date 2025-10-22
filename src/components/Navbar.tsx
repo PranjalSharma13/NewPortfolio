@@ -12,7 +12,7 @@ const Nav = styled.nav`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.8rem 2rem;
+  padding: 0.8rem 1rem;
   background: ${({ theme }) => theme.colors.bg};
   color: ${({ theme }) => theme.colors.text};
   transition: background 0.3s ease, color 0.3s ease;
@@ -25,11 +25,51 @@ const NavItems = styled.div`
   display: flex;
   align-items: center;
   gap: 1rem;
+  a {
+    font-size: 1.25em;
+    line-height: 1.5;
+   }
 `;
 
 const LogoImg = styled.img`
-  height: 32px;
+  height: 42px;
   user-select: none;
+`;
+const Item = styled(NavLink)`
+  position: relative;
+  text-decoration: none;
+  color: #0ea5e9;
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 2px;
+    width: 100%;
+    height: 2px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 180ms ease;
+  }
+
+  &:hover::after,
+  &:focus-visible::after,
+  &.active::after {
+    transform: scaleX(1);
+  }
+
+  /* keyboard focus ring */
+  &:focus-visible {
+    outline: 2px solid transparent;
+    box-shadow: 0 0 0 3px rgba(14,165,233,.45);
+    border-radius: 4px;
+  }
+
+  /* motion-sensitive users */
+  @media (prefers-reduced-motion: reduce) {
+    &::after { transition: none; }
+  }
 `;
 
 const ToggleButton = styled.button`
@@ -55,9 +95,9 @@ export const Navbar = () => {
         />
       </Link>
       <NavItems>
-        <NavLink to={PATH.PROJECTS}>{t("nav.projects")}</NavLink>
-        <NavLink to={PATH.EXPERIENCE}>{t("nav.experience")}</NavLink>
-        <NavLink to={PATH.CONTACT}>{t("nav.contact")}</NavLink>
+       <Item to={PATH.PROJECTS} end>{t("nav.projects")}</Item>
+    <Item to={PATH.EXPERIENCE}>{t("nav.experience")}</Item>
+    <Item to={PATH.CONTACT}>{t("nav.contact")}</Item>
         <ToggleButton onClick={toggleMode} aria-label="Toggle theme">
           {mode === "light" ? <Moon /> : <Sun />}
         </ToggleButton>

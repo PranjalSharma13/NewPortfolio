@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { Mail, Twitter, Github, Calendar } from "lucide-react";
 import ContactAvatar from "../assets/Pkawaii.png";
 import { CENTER, curvePath, pillPos, TARGETS } from "../data/connectors";
+import { Title } from "../theme/typography";
 
 const Contact = () => {
     return (
@@ -57,12 +58,6 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   margin: 5rem 0;
-`;
-
-const Title = styled.h1`
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  margin-bottom: 1rem;
 `;
 
 const Graph = styled.section`
