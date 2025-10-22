@@ -1,49 +1,51 @@
-// src/pages/Contact.tsx
 import styled from "styled-components";
 import { Mail, Twitter, Github, Calendar } from "lucide-react";
 import ContactAvatar from "../assets/Pkawaii.png";
+import { CENTER, curvePath, TARGETS } from "../data/connectors";
 
 const Contact = () => {
-  return (
-    <Wrapper>
-      <Title>Ping Me, Maybe?</Title>
-      <Graph aria-label="Contact graph">
-        <Connectors viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid meet">
-          <path d="M430 300 C 340 280, 250 250, 200 220" />
-          {/* calendly (bottom-left) */}
-          <path d="M430 300 C 340 330, 260 370, 210 410" />
-          {/* dm (top-right) */}
-          <path d="M570 300 C 660 280, 750 250, 800 220" />
-          {/* github (bottom-right) */}
-          <path d="M570 300 C 660 330, 740 370, 790 410" />
-        </Connectors>
-        <Center>
-          <Headshot src={ContactAvatar} alt="Pranjal avatar" />
-        </Center>
+    return (
+        <Wrapper>
+            <Title>Ping Me, Maybe?</Title>
+            <Graph aria-label="Contact graph">
+                <Connectors viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid meet">
+                    {TARGETS.map(t => {
+                        const d = curvePath(CENTER.x, CENTER.y, t.x, t.y, t.seed);
+                        return (
+                            <g key={t.seed}>
+                                <path className="halo" d={d} />
+                                <path className="line" d={d} />
+                            </g>
+                        );
+                    })}
+                </Connectors>
+                <Center>
+                    <Headshot src={ContactAvatar} alt="Pranjal avatar" />
+                </Center>
 
-        {/* Pills */}
-        <Pill style={{ left: "8%", top: "26%" }} href="mailto:pranjal.sharm98@gmail.com">
-          <Mail size={18} />
-          <span>Email</span>
-        </Pill>
+                {/* Pills */}
+                <Pill style={{ left: "8%", top: "26%" }} href="mailto:pranjal.sharm98@gmail.com">
+                    <Mail size={18} />
+                    <span>Email</span>
+                </Pill>
 
-        <Pill style={{ left: "9%", bottom: "14%" }} href="https://calendly.com/">
-          <Calendar size={18} />
-          <span>Calendly</span>
-        </Pill>
+                <Pill style={{ left: "9%", bottom: "14%" }} href="https://calendly.com/">
+                    <Calendar size={18} />
+                    <span>Calendly</span>
+                </Pill>
 
-        <Pill style={{ right: "8%", top: "26%" }} href="https://x.com/">
-          <Twitter size={18} />
-          <span>DM</span>
-        </Pill>
+                <Pill style={{ right: "8%", top: "26%" }} href="https://x.com/">
+                    <Twitter size={18} />
+                    <span>DM</span>
+                </Pill>
 
-        <Pill style={{ right: "9%", bottom: "14%" }} href="https://github.com/PranjalSharma13">
-          <Github size={18} />
-          <span>GitHub</span>
-        </Pill>
-      </Graph>
-    </Wrapper>
-  );
+                <Pill style={{ right: "9%", bottom: "14%" }} href="https://github.com/PranjalSharma13">
+                    <Github size={18} />
+                    <span>GitHub</span>
+                </Pill>
+            </Graph>
+        </Wrapper>
+    );
 };
 
 export default Contact;
@@ -74,27 +76,21 @@ const Graph = styled.section`
 `;
 
 const Connectors = styled.svg`
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
+  position: absolute; inset: 0; pointer-events: none;
 
-  path, circle {
-    fill: none;
-    stroke: ${({ theme }) => theme.colors?.accent ?? "#60a5fa"};
-    stroke-width: 3;
-  }
-  path {
-    stroke-linecap: round;
-    opacity: 0.55;
-  }
+  /* soft halo under the main stroke */
+  .halo { stroke:"#60a5fa"; stroke-opacity: .18; stroke-width: 8; }
+  .line { stroke:"#60a5fa"; stroke-opacity: .65; stroke-width: 3; }
+  path { fill: none; stroke-linecap: round; }
 `;
+
 
 const Center = styled.div`
   position: absolute;
   left: 50%; top: 50%;
   transform: translate(-50%, -50%);
-  width: clamp(180px, 28vw, 260px);
-  height: clamp(180px, 28vw, 260px);
+  width: clamp(220px, 40vw, 380px);
+  height: clamp(220px, 40vw, 380px);
   border-radius: 999px;
   display: grid; place-items: center;
   background: ${({ theme }) => theme.colors?.bg ?? "#0b1020"};
