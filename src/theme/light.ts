@@ -1,7 +1,7 @@
 
 export const lightTheme = {
   colors: {
-    bg: "#f9fafb",       // overall app background
+    bg:  "rgba(249, 250, 251, 0.9)",       // overall app background
     surface: "#ffffff",  // surfaces like cards/navbars
     text: "#111827",     // default text
     linkColor: "646cff",

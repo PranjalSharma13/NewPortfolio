@@ -54,8 +54,7 @@ const Item = styled(NavLink)`
   }
 
   &:hover::after,
-  &:focus-visible::after,
-  &.active::after {
+  &:focus-visible::after {
     transform: scaleX(1);
   }
 
