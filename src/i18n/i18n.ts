@@ -12,9 +12,13 @@ const resources = {
        home: {
         title: "Hey, I’m Pranjal {{wave}}",
         body1:
-          "Talented ✨ Software Developer with 3 years of professional experience excelling in both backend and frontend development (full stack) to create comprehensive applications. Experienced in seamlessly integrating, rigorously testing, and fortifying enterprise applications, with a strong track record of providing robust support.",
+          "Talented ✨ Software Developer with 3 years of professional experience excelling in both backend and frontend development (full stack) to create comprehensive applications.",
         body2:
-          "Proficient in constructing robust backend systems and intuitive user interfaces, leveraging Java, Spring Framework, and JavaScript libraries within supply chain logistics, e-commerce, and marketing domains. Additionally, skilled in cross-platform mobile apps using React Native. Hands-on experience with Kafka, ActiveMQ, Docker, and shell scripting.",
+          "Experienced in seamlessly integrating, rigorously testing, and fortifying enterprise applications, with a strong track record of providing robust support.",
+        body3:
+          "Proficient in constructing robust backend systems and intuitive user interfaces, leveraging Java, Spring Framework, and JavaScript libraries within supply chain logistics, e-commerce, and marketing domains.",
+        body4:
+          "Additionally, skilled in cross-platform mobile apps using React Native. Hands-on experience with Kafka, ActiveMQ, Docker, and shell scripting.",
       },
     },
   },

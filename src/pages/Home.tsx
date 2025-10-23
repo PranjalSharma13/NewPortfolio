@@ -4,20 +4,36 @@ import Picture2 from './../assets/Pkawaii2.png'
 import { useThemeMode } from "../hooks/useThemeModel";
 import styled, { keyframes } from "styled-components";
 import { useTranslation } from "react-i18next";
+import TechGirlImg  from "../assets/tech girl.png"
+import { Parallax, ParallaxLayer } from "@react-spring/parallax";
 
-const Home=() =>{
+const Home = () => {
   const { mode } = useThemeMode();
-  const {t}= useTranslation();
+  const { t } = useTranslation();
   return (
     <HomeWrapper>
-      <img
-        src={mode === "dark" ? Picture2 : Picture1}
-      />
-      <Title>
-      {t("home.title", { wave: "" })} <Wave aria-hidden="true">👋</Wave>
-    </Title>
-    <Body>{t("home.body1")}</Body>
-    <Body>{t("home.body2")}</Body>
+      <Parallax pages={3}>
+      <ParallaxLayer speed={-20} className="layer">
+        <FirstSection>
+          <img src={mode === "dark" ? Picture2 : Picture1} />
+          <Title>
+            {t("home.title", { wave: "" })} <Wave aria-hidden="true">👋</Wave>
+          </Title>
+
+        </FirstSection>
+      </ParallaxLayer>
+      <ParallaxLayer speed={-20} className="layer">
+        <SecondSection>
+        <Body>{t("home.body1")}</Body>
+        <img src={TechGirlImg}></img>
+        </SecondSection>
+      </ParallaxLayer>
+      <ParallaxLayer speed={-20} className="layer">
+        <ThirdSection>
+        <Body>{t("home.body2")}</Body>
+        </ThirdSection>
+      </ParallaxLayer>
+      </Parallax>
     </HomeWrapper>
   );
 }
@@ -47,19 +63,40 @@ const Wave = styled.span`
   }
 `;
 const HomeWrapper = styled.div`
+  align-items: center;
+  margin: 5rem 0rem;
+  display: block
+`;
+
+const FirstSection = styled.section`
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
   align-items: center;
-  margin: 5rem 0rem;
   img {
-    width: 450px;
+    width: 550px;
     height: auto;
     display: block;
   }
 `;
 const Body = styled.div`
  padding: 0rem 15rem;
+`;
+
+const ThirdSection = styled.section`
+  margin: 5rem 0rem;
+  display: flex;
+  flex-direction: row;
+`;
+const SecondSection = styled.section`
+  margin: 5rem 0rem;
+  display: flex;
+  flex-direction: row;
+  img {
+    width: 550px;
+    height: auto;
+    display: block;
+  }
 `;
 
 
