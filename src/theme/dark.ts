@@ -3,6 +3,7 @@ export const darkTheme = {
     bg: "rgba(17, 24, 39, 1)",
     surface: "#1f2937",
     text: "#f9fafb",
-    linkColor: "646cff"
+    linkColor: "646cff",
+    borderColor:'#ffffff'
   },
 };

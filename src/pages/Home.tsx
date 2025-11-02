@@ -65,7 +65,7 @@ const Home = () => {
             backgroundImage:bgImgs.join(", "),
             backgroundRepeat: "no-repeat",
             backgroundSize: "var(--imgW) auto",
-            backgroundPosition:"left var(--gutter) center, right calc(-7.5vw)",
+            backgroundPosition:"left var(--gutter) center, right calc(-5.5vw)",
 
           }}
         />
