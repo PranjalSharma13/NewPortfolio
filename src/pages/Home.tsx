@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import Picture1 from "./../assets/Pkawaii.png";
 import Picture2 from "./../assets/Pkawaii2.png";
 import { useThemeMode } from "../hooks/useThemeModel";
@@ -65,7 +65,8 @@ const Home = () => {
             backgroundImage:bgImgs.join(", "),
             backgroundRepeat: "no-repeat",
             backgroundSize: "var(--imgW) auto",
-            backgroundPosition: "left var(--gutter) center, right calc(-10vw) center",
+            backgroundPosition:"left var(--gutter) center, right calc(-7.5vw)",
+
           }}
         />
 
