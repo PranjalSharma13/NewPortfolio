@@ -15,11 +15,6 @@ const Home = () => {
   const { mode } = useThemeMode();
   const { t } = useTranslation();
 
-  const bgImgs = [
-    `url(${TechGirlImg1})`,
-    `url(${mode === "dark" ? Moon : Sun})`,
-  ].join(", ");
-
   return (
     <HomeWrapper>
       <ParallaxRoot pages={5} style={{ height: "100%" }}>
