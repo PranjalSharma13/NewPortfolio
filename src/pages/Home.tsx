@@ -8,82 +8,90 @@ import TechGirlImg from "../assets/tech girl.png";
 import TechGirlImg1 from "../assets/finalpic.png";
 import { Parallax, ParallaxLayer } from "@react-spring/parallax";
 import { Body } from "../theme/typography";
-import Sun from  "../assets/sun.png"
-import Moon from "../assets/moon.png"
-
+import Sun from  "../assets/sun.png";
+import Moon from "../assets/moon.png";
 
 const Home = () => {
   const { mode } = useThemeMode();
   const { t } = useTranslation();
+
   const bgImgs = [
-  `url(${TechGirlImg1})`,
-  `url(${mode === "dark" ? Moon : Sun})`,
-];
+    `url(${TechGirlImg1})`,
+    `url(${mode === "dark" ? Moon : Sun})`,
+  ].join(", ");
 
   return (
     <HomeWrapper>
       <ParallaxRoot pages={5} style={{ height: "100%" }}>
         {/* ---------- Page 1 ---------- */}
         <ParallaxLayer offset={0} speed={0}>
-          <FirstSection>
-            <img src={mode === "dark" ? Picture2 : Picture1} alt="" />
-            <Title>
-              {t("home.title", { wave: "" })} <Wave aria-hidden="true">👋</Wave>
-            </Title>
-          </FirstSection>
+          <Frame>
+            <FirstSection>
+              <img src={mode === "dark" ? Picture2 : Picture1} alt="" />
+              <Title>
+                {t("home.title", { wave: "" })} <Wave aria-hidden="true">👋</Wave>
+              </Title>
+            </FirstSection>
+          </Frame>
         </ParallaxLayer>
 
         {/* ---------- Sticky #1 (RIGHT): pages 2–3 ---------- */}
-        <ParallaxLayer
-          sticky={{ start: 1, end: 2 }}
-          style={{ pointerEvents: "none", zIndex: 0 }}
-        >
-          <StickyRight>
-            <StickyImg src={TechGirlImg} alt="Tech girl" />
-          </StickyRight>
+        <ParallaxLayer sticky={{ start: 1, end: 2 }} style={{ pointerEvents: "none", zIndex: 0 }}>
+          <Frame>
+            <StickyRight>
+              <StickyImg src={TechGirlImg} alt="Tech girl" />
+            </StickyRight>
+          </Frame>
         </ParallaxLayer>
 
         {/* ---------- Content pages 2 & 3 ---------- */}
         <ParallaxLayer offset={1} speed={0} style={{ zIndex: 1 }}>
-          <ContentLeft>
-            <Inner><Body>{t("home.body1")}</Body></Inner>
-          </ContentLeft>
+          <Frame>
+            <ContentLeft>
+              <Inner><Body>{t("home.body1")}</Body></Inner>
+            </ContentLeft>
+          </Frame>
         </ParallaxLayer>
 
         <ParallaxLayer offset={2} speed={0} style={{ zIndex: 1 }}>
-          <ContentLeft>
-            <Inner><Body>{t("home.body2")}</Body></Inner>
-          </ContentLeft>
+          <Frame>
+            <ContentLeft>
+              <Inner><Body>{t("home.body2")}</Body></Inner>
+            </ContentLeft>
+          </Frame>
         </ParallaxLayer>
 
-        {/* ---------- Sticky #2 (LEFT): pages 4–5 ---------- */}
-        <ParallaxLayer
-          sticky={{ start: 3, end: 5 }}
-          style={{
-            pointerEvents: "none",
-            zIndex: 0,
-            backgroundImage:bgImgs.join(", "),
-            backgroundRepeat: "no-repeat",
-            backgroundSize: "var(--imgW) auto",
-            backgroundPosition:"left var(--gutter) center, right calc(-5.5vw)",
+        {/* ---------- Sticky #2 (LEFT bg): pages 4–5 ---------- */}
+       {/* ---------- Sticky #2 (LEFT images): pages 4–5 ---------- */}
+<ParallaxLayer sticky={{ start: 3, end: 5 }} style={{ pointerEvents: "none", zIndex: 0 }}>
+  <Frame>
+    <StickyArt>
+      {/* left image (tech girl) */}
+      <img className="left" src={TechGirlImg1} alt="" />
 
-          }}
-        />
+      {/* right image (sun/moon) */}
+      <img className="right" src={mode === "dark" ? Moon : Sun} alt="" />
+    </StickyArt>
+  </Frame>
+</ParallaxLayer>
 
 
-        {/* ---------- Page 4 (sun drops; content right) ---------- */}
+        {/* ---------- Page 4 ---------- */}
         <ParallaxLayer offset={3} speed={0} style={{ zIndex: 10 }}>
+          <Frame>
             <ContentRight style={{ position: "relative", zIndex: 1 }}>
               <Inner><Body>{t("home.body3")}</Body></Inner>
             </ContentRight>
-
+          </Frame>
         </ParallaxLayer>
 
         {/* ---------- Page 5 ---------- */}
         <ParallaxLayer offset={4} speed={0} style={{ zIndex: 1 }}>
-          <ContentRight>
-            <Inner><Body>{t("home.body4")}</Body></Inner>
-          </ContentRight>
+          <Frame>
+            <ContentRight>
+              <Inner><Body>{t("home.body4")}</Body></Inner>
+            </ContentRight>
+          </Frame>
         </ParallaxLayer>
       </ParallaxRoot>
     </HomeWrapper>
@@ -106,16 +114,25 @@ const wave = keyframes`
 
 /* Page root = single source of truth for spacing + image width */
 const HomeWrapper = styled.main`
-  height: 100vh;        /* viewport for Parallax */
-  overflow: hidden;     /* kill outer scrollbar */
+  height: 100vh;
+  overflow: hidden;
 
   /* Shared tokens for this page */
-  --imgW: clamp(280px, 38vw, 560px);
+  --imgW: clamp(240px, 38vw, 560px);
   --gutter: clamp(16px, 6vw, 64px);
 `;
 
-/* Parallax root */
+/* Clamp the whole experience to 1500px and center it */
+const Frame = styled.div`
+  width: min(100%, 1500px);
+  margin-inline: auto;
+  height: 100%;
+  position: relative;
+  padding-inline: max(var(--gutter), calc((100vw - 1500px) / 2));
+`;
+
 const ParallaxRoot = styled(Parallax)`
+  width: 100%;
   scrollbar-width: none;
   -ms-overflow-style: none;
   &::-webkit-scrollbar { display: none; }
@@ -139,7 +156,6 @@ const FirstSection = styled.section`
   display: grid;
   place-items: center;
   text-align: center;
-  padding: 8vh 6vw;
   box-sizing: border-box;
 
   img {
@@ -150,14 +166,13 @@ const FirstSection = styled.section`
   }
 `;
 
-/* ----- Sticky image docks RIGHT (pages 2–3) ----- */
+/* Sticky RIGHT art (hidden on small to avoid overlap) */
 const StickyRight = styled.div`
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: flex-end;
   pointer-events: none;
-  padding-right: var(--gutter);
 `;
 
 const StickyImg = styled.img`
@@ -165,41 +180,72 @@ const StickyImg = styled.img`
   height: auto;
   display: block;
   opacity: 0.95;
+
+  @media (max-width: 900px) {
+    display: none; /* kill overlap on small screens */
+  }
 `;
 
-/* ----- Left-side text (reserves space on the right for sticky image) ----- */
+/* Left text; reserve space for sticky art, but collapse on small */
 const ContentLeft = styled.section`
   height: 100vh;
   display: grid;
   align-items: center;
   box-sizing: border-box;
 
-  padding-left: var(--gutter);
   padding-right: calc(var(--imgW) + var(--gutter));
 
   @media (max-width: 900px) {
-    padding-right: var(--gutter);
+    padding-right: 0; /* sticky image hidden -> no reserve */
   }
 `;
 
-/* ----- Right-side text (reserves space on the left for sticky image) ----- */
+/* Right text; mirror of left; collapse on small */
 const ContentRight = styled.section`
   height: 100vh;
   display: grid;
   align-items: center;
   box-sizing: border-box;
 
-  /* mirror of ContentLeft */
-  padding-right: var(--gutter);
   padding-left: calc(var(--imgW) + var(--gutter));
 
   @media (max-width: 900px) {
-    padding-left: var(--gutter);
+    padding-left: 0;
   }
 `;
 
 /* Keep line-length readable */
 const Inner = styled.div`
   max-width: 70ch;
+`;
+
+const StickyArt = styled.div`
+  position: relative;
+  height: 100%;
+  pointer-events: none;
+
+  /* left art */
+  img.left {
+    position: absolute;
+    left: var(--gutter);
+    top: 60%;
+    transform: translateY(-50%);
+    width: clamp(200px, 28vw, 420px);   /* ← set exactly what you want */
+    height: auto;
+  }
+
+  /* right art */
+  img.right {
+    position: absolute;
+    right: var(--gutter);
+    top: 20%;
+    transform: translateY(-50%);
+    width: clamp(140px, 18vw, 300px);   /* ← independent size */
+    height: auto;
+  }
+
+  @media (max-width: 900px) {
+    display: none; /* keep mobile clean */
+  }
 `;
 
