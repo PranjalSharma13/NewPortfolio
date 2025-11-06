@@ -225,7 +225,7 @@ const StickyArt = styled.div`
     left: var(--gutter);
     top: 60%;
     transform: translateY(-50%);
-    width: clamp(200px, 28vw, 420px);   /* ← set exactly what you want */
+    width: clamp(200px, 28vw, 520px);   /* ← set exactly what you want */
     height: auto;
   }
 
@@ -233,7 +233,8 @@ const StickyArt = styled.div`
   img.right {
     position: absolute;
     right: var(--gutter);
-    top: 20%;
+    top: 30%;
+    right: -5%;
     transform: translateY(-50%);
     width: clamp(140px, 18vw, 300px);   /* ← independent size */
     height: auto;
