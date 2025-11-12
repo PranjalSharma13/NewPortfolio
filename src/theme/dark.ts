@@ -5,6 +5,7 @@ export const darkTheme = {
     text: "#f9fafb",
     linkColor: "646cff",
     borderColor:'#ffffff',
-    screenBackground:"rgba(17, 24, 39, 0.1)"
+    screenBackground:"rgba(17, 24, 39, 0.1)",
+    experienceLine:'#ffffffff',
   },
 };

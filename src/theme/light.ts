@@ -7,6 +7,7 @@ export const lightTheme = {
     linkColor: "646cff",
     borderColor:'#ffffff',
     screenBackground: "transparent",
+    experienceLine:'#e5e7eb',
   },
 };
 export type AppTheme = typeof lightTheme;

@@ -40,7 +40,7 @@ const YearList = styled.ul`
     top: 1.25rem;
     bottom: 1.25rem;
     width: 2px;
-    background: var(--line);
+    background: ${({ theme }) => theme.colors.experienceLine};
   }
 `;
 
@@ -95,7 +95,8 @@ const YearButton = styled.button<{ side: "left" | "right"; active?: boolean }>`
     top: 50%;
     height: 2px;
     width: 24px;              /* match the offset above */
-     background: ${({ active }) => (active ? "var(--brand)" : "var(--line)")};
+    background: ${({ active, theme }) =>
+      active ? "var(--brand)" : theme.colors.experienceLine};
     transform: translateY(-50%);
     ${({ side }) =>
       side === "left"
