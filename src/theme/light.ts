@@ -5,7 +5,8 @@ export const lightTheme = {
     surface: "#ffffff",  // surfaces like cards/navbars
     text: "#111827",     // default text
     linkColor: "646cff",
-    borderColor:'#ffffff'
+    borderColor:'#ffffff',
+    screenBackground: "transparent",
   },
 };
 export type AppTheme = typeof lightTheme;

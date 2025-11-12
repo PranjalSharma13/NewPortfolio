@@ -1,6 +1,6 @@
 import React from "react";
 
-import styled from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 import { useThemeMode } from "../hooks/useThemeModel";
 import { PROJECTS } from "../data/projects";
 import { TECHS } from "../data/textIcons";
@@ -9,10 +9,14 @@ import { ExternalLink, Github } from "lucide-react";
 
 const Projects = () => {
   const { mode } = useThemeMode();
+  const loop = [...PROJECTS, ...PROJECTS];
+
   return (
-    <section aria-labelledby="projects-heading">
-      <Grid>
-        {PROJECTS.map((p) => (
+    <ProjectWrapper>
+      <Columns>
+       <Column >
+        <Track direction="up">
+        {loop.map((p) => (
           <Card key={p.title} tabIndex={0} aria-label={`${p.title}`} mode={mode === "dark"}>
             <Thumb>
               <img src={p.image} alt={`${p.title} preview`} />
@@ -57,26 +61,112 @@ const Projects = () => {
             </Overlay>
           </Card>
         ))}
-      </Grid>
-    </section>
+        </Track>
+      </Column>
+       <Column >
+       <Track direction="down">
+        {loop.map((p) => (
+          <Card key={p.title} tabIndex={0} aria-label={`${p.title}`} mode={mode === "dark"}>
+            <Thumb>
+              <img src={p.image} alt={`${p.title} preview`} />
+            </Thumb>
+
+            <Content>
+              <Title>{p.title}</Title>
+              <Blurb>{p.blurb}</Blurb>
+            </Content>
+            <Overlay aria-hidden="true">
+              <Actions>
+                {(() => {
+                  const link = p.live ?? p.repo;
+                  if (!link) return null;
+                  const isLive = Boolean(p.live);
+                  return (
+                    <IconBtn
+                      as="a"
+                      href={link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={isLive ? "Open live site" : "Open GitHub repository"}
+                      title={isLive ? "Open live site" : "Open GitHub repository"}
+                      tabIndex={-1}
+                    >
+                      {isLive ? <ExternalLink size={18} /> : <Github size={18} />}
+                    </IconBtn>
+                  );
+                })()}
+              </Actions>
+              <BadgeWrap>
+                {p.badges.map((id) => {
+                  const meta = TECHS[id];
+                  return (
+                    <Badge key={id} title={meta.label}>
+                      <BadgeImg src={meta.icon} alt="" aria-hidden="true" />
+                      <span>{meta.label}</span>
+                    </Badge>
+                  );
+                })}
+              </BadgeWrap>
+            </Overlay>
+          </Card>
+        ))}
+        </Track>
+      </Column>
+      </Columns>
+    </ProjectWrapper>
   );
 };
 
 export default Projects;
-
-/* ============ styles ============ */
-
-
-const Grid = styled.div`
-  margin: 5rem 2rem;
-  display: grid;
-  gap: 6rem;
-  grid-template-columns: repeat(auto-fit, minmax(495px, 1fr));
-  justify-items: center;
-  @media (min-width: 640px) { --card-w: 340px; }
-  @media (min-width: 768px) { --card-w: 360px; }
-  @media (min-width: 1280px){ --card-w: 380px; }
+const scrollUp = keyframes`
+  0%   { transform: translateY(0); }
+  100% { transform: translateY(-50%); } /* 2x list => -50% loops cleanly */
 `;
+
+const Track = styled.div<{ direction: "up" | "down"; delay?: string }>`
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  will-change: transform;
+  ${({ direction, delay }) => css`
+    animation: ${scrollUp} 28s linear infinite;
+    animation-direction: ${direction === "down" ? "reverse" : "normal"};
+    ${delay ? `animation-delay: ${delay};` : ""}
+  `}
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+`;
+
+/* 2) Now Column can safely reference Track */
+const Column = styled.div`
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+  isolation: isolate;
+
+  /* Pause only this column’s Track when hovering/focusing inside it */
+  &:hover ${Track},
+  &:focus-within ${Track} {
+    animation-play-state: paused;
+  }
+`;
+
+const ProjectWrapper = styled.section`
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 20px;
+`;
+
+const Columns = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 5rem;
+  align-items: start;
+  margin: 5rem 0;
+`;
+
 
 const Card = styled.article<{ mode?: boolean }>`
   position: relative;
@@ -86,6 +176,7 @@ const Card = styled.article<{ mode?: boolean }>`
 
   backdrop-filter: blur(8px);
   border: 1px solid ${({ mode }) => (mode ? "rgba(255,255,255,0.12)" : "rgba(0,0,0,0.08)")};
+  background-color: ${({ mode }) => (mode ? "rgba(255, 255, 255, 0.8)" : "transparent")};
   box-shadow: 0 10px 30px rgba(0,0,0,0.25);
   transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
 

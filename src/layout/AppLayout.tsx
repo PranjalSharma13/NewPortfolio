@@ -10,6 +10,7 @@ const Shell = styled.div`
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
+  background-color: ${({ theme }) => theme.colors.screenBackground};
 `;
 
 const Main = styled.main`
