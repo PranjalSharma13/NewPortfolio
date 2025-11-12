@@ -20,6 +20,12 @@ const resources = {
         body4:
           "Additionally, skilled in cross-platform mobile apps using React Native. Hands-on experience with Kafka, ActiveMQ, Docker, and shell scripting.",
       },
+      contact: {
+      title: "Ping Me, Maybe?",
+      email: "Email",
+      calendly: "Calendly",
+      dm: "DM"
+    }
     },
   },
   hi: {
@@ -36,6 +42,12 @@ const resources = {
         body2:
           "सप्लाई-चेन लॉजिस्टिक्स, ई-कॉमर्स और मार्केटिंग डोमेन्स में Java, Spring Framework और JavaScript लाइब्रेरीज़ से मज़बूत बैकएंड और सहज UI बनाता/बनाती हूँ। React Native से क्रॉस-प्लैटफ़ॉर्म मोबाइल ऐप्स का अनुभव; Kafka, ActiveMQ, Docker और शेल स्क्रिप्टिंग में हाथ पक्का।",
       },
+      contact: {
+      title: "पिंग करोगे, शायद?",
+      email: "ईमेल",
+      calendly: "कैलेंडली",
+      dm: "डीएम"
+    }
     },
   },
   ne: {
@@ -52,6 +64,12 @@ const resources = {
         body2:
           "सप्लाई-चेन, इ–कमर्स र मार्केटिङ क्षेत्रमा Java, Spring Framework र JavaScript लाइब्रेरीहरू प्रयोग गरी बलिया ब्याकएन्ड र सहज UI निर्माण। React Native बाट क्रस-प्ल्याटफर्म मोबाइल एप्सको अनुभव; Kafka, ActiveMQ, Docker र शेल स्क्रिप्टिङमा दखल।",
       },
+      contact: {
+      title: "पिङ्ग गर्ने हो?",
+      email: "इमेल",
+      calendly: "क्यालेन्डली",
+      dm: "डीएम"
+    },
     },
   },
   es: {
@@ -64,6 +82,12 @@ const resources = {
         body2:
           "Competente en construir backends robustos e interfaces intuitivas con Java, Spring Framework y bibliotecas de JavaScript en logística de cadena de suministro, comercio electrónico y marketing. Además, experiencia en apps móviles multiplataforma con React Native; manejo de Kafka, ActiveMQ, Docker y scripting en shell.",
       },
+      contact: {
+      title: "¿Me escribes, quizá?",
+      email: "Correo",
+      calendly: "Calendly",
+      dm: "MD"
+    },
     },
   },
 };

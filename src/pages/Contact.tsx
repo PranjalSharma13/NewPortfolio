@@ -1,128 +1,301 @@
-import styled from "styled-components";
-import { Mail, Twitter, Github, Calendar } from "lucide-react";
-import ContactAvatar from "../assets/Pkawaii.png";
-import { CENTER, curvePath, pillPos, TARGETS } from "../data/connectors";
-import { Title } from "../theme/typography";
+import React, { useMemo, useState, useRef, useEffect } from "react";
+import styled, { css } from "styled-components";
+import type { YearItem } from "../data/Experience";
+import { useThemeMode } from "../hooks/useThemeModel";
+import { Parallax, ParallaxLayer, IParallax } from "@react-spring/parallax";
 
-const Contact = () => {
-    return (
-        <Wrapper>
-            <Title>Ping Me, Maybe?</Title>
-            <Graph aria-label="Contact graph">
-                <Connectors viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid meet">
-                    {TARGETS.map(t => {
-                        const d = curvePath(CENTER.x, CENTER.y, t.x, t.y, t.seed);
-                        return (
-                            <g key={t.seed}>
-                                <path className="halo" d={d} />
-                                <path className="line" d={d} />
-                            </g>
-                        );
-                    })}
-                </Connectors>
-                <Center>
-                    <Headshot src={ContactAvatar} alt="Pranjal avatar" />
-                </Center>
-                {/* Pills — positioned from TARGETS so they hug the curve ends */}
-                <Pill style={pillPos(TARGETS[0],94)} href="mailto:pranjal.sharm98@gmail.com" target="_blank">
-                    <Mail size={20} />
-                    <span>Email</span>
-                </Pill>
-
-                <Pill style={{ ...pillPos(TARGETS[1], 135), marginTop: "-40px" }}  href="https://calendly.com/" target="_blank">
-                    <Calendar size={20} />
-                    <span>Calendly</span>
-                </Pill>
-
-                <Pill style={pillPos(TARGETS[2])} href="https://x.com/" target="_blank">
-                    <Twitter size={20} />
-                    <span>DM</span>
-                </Pill>
-
-                <Pill style={pillPos(TARGETS[3])} href="https://github.com/PranjalSharma13" target="_blank">
-                    <Github size={20} />
-                    <span>GitHub</span>
-                </Pill>
-
-            </Graph>
-        </Wrapper>
-    );
+export type TimelineProps = {
+  data: YearItem[];
 };
 
-export default Contact;
+// ---------- Layout ----------
+const Wrap = styled.section`
+  --line: #e5e7eb; /* gray-200 */
+  --text: #0f172a; /* slate-900 */
+  --muted: #64748b; /* slate-500 */
+  --brand: #0ea5e9; /* sky-500 */
 
-/* ---------- styles ---------- */
-
-const Wrapper = styled.div`
+  margin: 5rem 0rem;
+  color: ${({ theme }) => theme.colors.text};
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 5rem 0;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 10rem;
 `;
 
-const Graph = styled.section`
+const Right = styled.div`
+  position: sticky;
+  top: 80px;
+  height: calc(100vh - 80px); /* ensure the Parallax has a real viewport */
+  width: 520px; /* just a comfy width for the details card area */
+  max-width: 100%;
+`;
+
+// LEFT rail
+const YearList = styled.ul`
+  list-style: none;
+  margin: 0;
+  padding: 0;
   position: relative;
-  width: min(1380px, 92vw);
-  aspect-ratio: 16 / 9;
-  background: transparent;
-  overflow: hidden;
+  display: grid;
+  gap: 7.5rem;
 
+  &::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 1.25rem;
+    bottom: 1.25rem;
+    width: 2px;
+    background: var(--line);
+  }
 `;
 
-const Connectors = styled.svg`
-  position: absolute; inset: 0; pointer-events: none;
-
-  .halo { stroke: #60a5fa; stroke-opacity: .18; stroke-width: 8; }
-  .line { stroke: #60a5fa; stroke-opacity: .65; stroke-width: 3; }
-  path { fill: none; stroke-linecap: round; }
+const YearItemLi = styled.li`
+  position: relative;
+  min-height: 56px;
 `;
 
-
-const Center = styled.div`
+const Dot = styled.span<{ active?: boolean }>`
   position: absolute;
-  left: 50%; top: 50%;
-  transform: translate(-50%, -50%);
-  width: clamp(220px, 40vw, 380px);
-  height: clamp(220px, 40vw, 380px);
+  left: calc(50% - 8px);
+  top: 10px;
+  width: 16px;
+  height: 16px;
   border-radius: 999px;
-  display: grid; place-items: center;
-  background: ${({ theme }) => theme.colors?.bg ?? "#0b1020"};
-  box-shadow:
-    0 10px 30px rgba(0,0,0,.18),
-    inset 0 0 0 2px "#60a5fa";
+  background: #fff;
+  border: 2px solid var(--line);
+
+  ${({ active }) =>
+    active &&
+    css`
+      border-color: var(--brand);
+      box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.18);
+    `}
 `;
 
-const Headshot = styled.img`
-width: 100%;
-  border-radius: 50%;
-  object-fit: cover;
-  display: block;
-    border: 1px solid #60a5fa;
-`;
+const YearButton = styled.button<{ side: "left" | "right"; active?: boolean }>`
+  appearance: none;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--text);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  padding: 10px 14px;
+  border-radius: 12px;
+  cursor: pointer;
 
-const Pill = styled.a`
   position: absolute;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.65rem;                /* a bit more breathing room */
-  padding: 0.72rem 1rem;       /* bigger pill */
-  border-radius: 999px;
-  text-decoration: none;
-  color: ${({ theme }) => theme.colors?.text ?? "#111827"};
-  background: ${({ theme }) => theme.colors?.bg ?? "#fff"};
-  box-shadow: 0 10px 24px rgba(0,0,0,.10),
-              inset 0 0 0 2px "#60a5fa" 33;
-  transition: transform .15s ease, box-shadow .15s ease, opacity .15s ease;
-  opacity: 0.97;
+  top: 2px;
+  ${({ side }) =>
+    side === "left"
+      ? css`
+          right: calc(50% + 30px);
+        `
+      : css`
+          left: calc(50% + 33px);
+        `}
 
-  &:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 14px 30px rgba(0,0,0,.12),
-                inset 0 0 0 2px "#60a5fa" 55;
-    opacity: 1;
+  &::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    height: 2px;
+    width: 24px;
+    background: ${({ active }) => (active ? "var(--brand)" : "var(--line)")};
+    transform: translateY(-50%);
+    ${({ side }) =>
+      side === "left"
+        ? css`
+            right: -24px;
+          `
+        : css`
+            left: -24px;
+          `}
   }
 
-  svg { width: 20px; height: 20px; }   /* ensure larger icon even if size prop omitted */
-  span { font-weight: 650; font-size: 0.975rem; }
+  &:hover {
+    border-color: var(--brand);
+  }
+  &:focus-visible {
+    outline: 3px solid rgba(14, 165, 233, 0.35);
+    outline-offset: 2px;
+  }
+
+  ${({ active }) =>
+    active &&
+    css`
+      border-color: var(--brand);
+      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03), 0 0 0 3px rgba(14, 165, 233, 0.12);
+    `}
 `;
 
+const Detail = styled.div<{ mode: boolean }>`
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: ${({ mode }) =>
+    mode ? "rgba(0, 0, 0, 0.85)" : "rgba(51, 50, 50, 0.02)"};
+  padding: 20px 18px;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.02);
+  width: 100%;
+`;
+
+const Role = styled.h2`
+  margin: 0 0 4px;
+  font-size: 1.1rem;
+`;
+
+const Company = styled.div<{ mode: boolean }>`
+  color: ${({ mode }) => (mode ? "var(--brand)" : "var(--text)")};
+  font-weight: 700;
+  margin-bottom: 8px;
+`;
+
+const Meta = styled.div<{ mode: boolean }>`
+  color: ${({ mode }) => (mode ? "#035784" : "var(--muted)")};
+  font-size: 0.95rem;
+  margin-bottom: 32px;
+`;
+
+const Bullets = styled.ul`
+  margin: 0;
+  display: grid;
+  gap: 8px;
+  li {
+    line-height: 1.4;
+    text-align: left;
+  }
+`;
+
+const StackRow = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 16px 0px;
+  padding: 0px 16px;
+`;
+
+const Chip = styled.span<{ mode: boolean }>`
+  border: 1px solid ${({ mode }) => (mode ? "var(--brand)" : "var(--line)")};
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 0.85rem;
+  background: ${({ theme }) => theme.colors.bg};
+  color: ${({ theme }) => theme.colors.text};
+`;
+
+// ---------- Component ----------
+export default function Experience({ data }: TimelineProps) {
+  // sort years ascending so page 0 is the earliest, page N-1 is latest
+  const years = useMemo(() => [...data].sort((a, b) => a.year - b.year), [data]);
+  const lastYear = years[years.length - 1]?.year;
+  const [activeYear, setActiveYear] = useState<number>(lastYear);
+  const { mode } = useThemeMode();
+
+  // Parallax handle type (official)
+  const parallaxRef = useRef<IParallax | null>(null);
+
+  // quick index lookup for scrollTo
+  const indexByYear = useMemo(() => {
+    const map = new Map<number, number>();
+    years.forEach((y, i) => map.set(y.year, i));
+    return map;
+  }, [years]);
+
+  const active = years.find((y) => y.year === activeYear);
+
+  // click a year button => update active + parallax page
+  const jumpToYear = (year: number) => {
+    setActiveYear(year);
+    const idx = indexByYear.get(year) ?? 0;
+    parallaxRef.current?.scrollTo(idx);
+  };
+
+  // sync activeYear while scrolling the Parallax
+  useEffect(() => {
+    const container = parallaxRef.current?.container.current as
+      | HTMLDivElement
+      | undefined;
+    if (!container) return;
+
+    const onScroll = () => {
+      const page = Math.round(container.scrollTop / container.clientHeight);
+      const y = years[page]?.year;
+      if (y && y !== activeYear) setActiveYear(y);
+    };
+
+    container.addEventListener("scroll", onScroll, { passive: true });
+    return () => container.removeEventListener("scroll", onScroll);
+  }, [years, activeYear]);
+
+  return (
+    <Wrap aria-labelledby="timeline-heading">
+      {/* LEFT: Year rail */}
+      <YearList>
+        {years.map((y, idx) => {
+          const side: "left" | "right" = idx % 2 === 0 ? "left" : "right";
+          const isActive = y.year === activeYear;
+          return (
+            <YearItemLi key={y.year}>
+              <Dot aria-hidden active={isActive} />
+              <YearButton
+                side={side}
+                active={isActive}
+                aria-pressed={isActive}
+                onClick={() => jumpToYear(y.year)}
+                title={`Show ${y.year} experience`}
+              >
+                {y.year}
+              </YearButton>
+            </YearItemLi>
+          );
+        })}
+      </YearList>
+
+      {/* RIGHT: Parallax-driven details */}
+      <Right>
+        <Parallax
+          ref={parallaxRef}
+          pages={years.length}
+          style={{ height: "100%", width: "100%" }}
+        >
+          {years.map((y, idx) => (
+            <ParallaxLayer key={y.year} offset={idx} speed={0.3}>
+              <Detail
+                role="region"
+                aria-live="polite"
+                aria-label={`Details for ${y.year}`}
+                mode={mode === "dark"}
+              >
+                {y.company && <Company mode={mode === "dark"}>{y.company}</Company>}
+                {y.role && <Role>{y.role}</Role>}
+                {y.locationDate && (
+                  <Meta mode={mode === "dark"}>{y.locationDate}</Meta>
+                )}
+
+                {y.bullets && y.bullets.length > 0 && (
+                  <Bullets>
+                    {y.bullets.map((b, i) => (
+                      <li key={i}>{b}</li>
+                    ))}
+                  </Bullets>
+                )}
+
+                {y.stack && y.stack.length > 0 && (
+                  <StackRow>
+                    {y.stack.map((s) => (
+                      <Chip mode={mode === "dark"} key={s}>
+                        {s}
+                      </Chip>
+                    ))}
+                  </StackRow>
+                )}
+              </Detail>
+            </ParallaxLayer>
+          ))}
+        </Parallax>
+      </Right>
+    </Wrap>
+  );
+}
