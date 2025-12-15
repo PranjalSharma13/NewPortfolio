@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useRef} from "react";
 import styled from "styled-components";
 import { Sun, Moon } from "lucide-react";
 import { useThemeMode } from "../hooks/useThemeModel";
@@ -7,13 +7,17 @@ import BlackLogo from '../assets/PS_Logo_Black.png'
 import { Link, NavLink } from "react-router-dom";
 import { PATH } from "../routes/path";
 import { useTranslation } from "react-i18next";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const Nav = styled.nav`
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0.8rem 1rem;
-  background: ${({ theme }) => theme.colors.bg};
+  background: ${({ theme }) => theme.colors.navBarBackground};
   color: ${({ theme }) => theme.colors.text};
   transition: background 0.3s ease, color 0.3s ease;
   position: sticky;
@@ -85,8 +89,47 @@ const ToggleButton = styled.button`
 export const Navbar = () => {
   const { mode, toggleMode } = useThemeMode();
   const { t } = useTranslation();
+  const navRef = useRef<HTMLElement | null>(null);
+  const lastScroll = useRef(0);
+
+  useEffect(() => {
+    const nav = navRef.current;
+    if (!nav) return;
+
+    gsap.set(nav, { y: 0 });
+
+    const trigger = ScrollTrigger.create({
+      start: 0,
+      end: "max",
+      onUpdate: (self) => {
+        const current = self.scroll();
+
+        if (current > lastScroll.current && current > 80) {
+          // scrolling DOWN → hide
+          gsap.to(nav, {
+            y: "-100%",
+            duration: 0.35,
+            ease: "power2.out",
+          });
+        } else {
+          // scrolling UP → show
+          gsap.to(nav, {
+            y: "0%",
+            duration: 0.35,
+            ease: "power2.out",
+          });
+        }
+
+        lastScroll.current = current;
+      },
+    });
+
+    return () => {
+      trigger.kill();
+    };
+  }, []);
   return (
-    <Nav>
+    <Nav  ref={navRef}>
       <Link to={PATH.HOME} aria-label="Home">
         <LogoImg
           src={mode === "light" ? BlackLogo : WhiteLogo}
@@ -94,9 +137,9 @@ export const Navbar = () => {
         />
       </Link>
       <NavItems>
-       <Item to={PATH.PROJECTS} end>{t("nav.projects")}</Item>
-    <Item to={PATH.EXPERIENCE}>{t("nav.experience")}</Item>
-    <Item to={PATH.CONTACT}>{t("nav.contact")}</Item>
+        <Item to={PATH.PROJECTS} end>{t("nav.projects")}</Item>
+        <Item to={PATH.EXPERIENCE}>{t("nav.experience")}</Item>
+        <Item to={PATH.CONTACT}>{t("nav.contact")}</Item>
         <ToggleButton onClick={toggleMode} aria-label="Toggle theme">
           {mode === "light" ? <Moon /> : <Sun />}
         </ToggleButton>

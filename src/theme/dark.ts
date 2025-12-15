@@ -7,5 +7,6 @@ export const darkTheme = {
     borderColor:'#ffffff',
     screenBackground:"rgba(17, 24, 39, 0.1)",
     experienceLine:'#ffffffff',
+    navBarBackground:"rgba(17, 24, 39, 0.8)",
   },
 };
