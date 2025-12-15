@@ -4,8 +4,9 @@ import PetGallery from "../assets/projects/petGallery.png";
 import BadgeSystem from "../assets/projects/badgeSystem.png";
 import RealEstate from  "../assets/projects/realEstate.png";
 import Blume from  "../assets/projects/blume2.jpg";
-import Skin from "../assets/projects/Skin.png"
-import CarKart from "../assets/projects/CarKart.png"
+import Skin from "../assets/projects/Skin.png";
+import CarKart from "../assets/projects/CarKart.png";
+import Portfolio from "../assets/projects/portfolio.png"
 import type { TechId } from "./textIcons";
 
 export type Project = {
@@ -82,4 +83,13 @@ export const PROJECTS: Project[] = [
     badges: ["python", "xml", "blender"],
     repo:"https://www.ijariit.com/manuscripts/v7i4/V7I4-1407.pdf"
   },
+    {
+    title: "Portfolio",
+    blurb:
+      "Built using React and modern JavaScript libraries, this site showcases my projects, professional experience, contact information, and provides access to my CV, all presented through a clean, responsive, and user-friendly interface.",
+    image: Portfolio,
+    badges: ["react", "typescript", "javascript"],
+    repo:"https://github.com/PranjalSharma13/NewPortfolio"
+  },
+
 ];
