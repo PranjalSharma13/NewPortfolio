@@ -8,5 +8,6 @@ export const darkTheme = {
     screenBackground:"rgba(17, 24, 39, 0.1)",
     experienceLine:'#ffffffff',
     navBarBackground:"rgba(17, 24, 39, 0.8)",
+    mobileNavBarBackground:"rgba(17, 24, 39, 1)",
   },
 };

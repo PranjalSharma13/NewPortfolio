@@ -9,6 +9,7 @@ export const lightTheme = {
     screenBackground: "transparent",
     experienceLine:'#e5e7eb',
     navBarBackground: "rgba(249, 250, 251, 0.5)",
+    mobileNavBarBackground:"rgba(249, 250, 251, 1)",
   },
 };
 export type AppTheme = typeof lightTheme;
