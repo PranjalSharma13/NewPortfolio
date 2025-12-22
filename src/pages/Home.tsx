@@ -111,6 +111,7 @@ const wave = keyframes`
 const HomeWrapper = styled.main`
   height: 100vh;
   overflow: hidden;
+  max-width: 1400px;
 
   /* Shared tokens for this page */
   --imgW: clamp(240px, 38vw, 560px);
