@@ -112,10 +112,19 @@ const HomeWrapper = styled.main`
   height: 100vh;
   overflow: hidden;
   max-width: 1400px;
+  /* default (≥1400px) */
+  --imgW: clamp(300px, 32vw, 560px);
+  --gutter: clamp(16px, 5vw, 64px);
+  --stickyShift: 0px;
+  --stickyRightShift: 0px;
 
-  /* Shared tokens for this page */
-  --imgW: clamp(240px, 38vw, 560px);
-  --gutter: clamp(16px, 6vw, 64px);
+  /* below 1400px → bring images inward */
+  @media (max-width: 1399px) {
+    --imgW: clamp(240px, 34vw, 420px);
+    --gutter: clamp(12px, 4vw, 40px);
+    --stickyShift: 40px;
+    --stickyRightShift: 60px;
+  }
 `;
 
 /* Clamp the whole experience to 1500px and center it */
@@ -153,11 +162,17 @@ const FirstSection = styled.section`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+img {
+  width: 400px; /* default for < 1400px */
+  height: auto;
+}
 
+@media (min-width: 1400px) {
   img {
-    width: 400px;
-    height: auto;
+    width: 600px; /* larger screens */
   }
+}
+
 `;
 
 /* Sticky RIGHT art (hidden on small to avoid overlap) */
@@ -174,6 +189,7 @@ const StickyImg = styled.img`
   height: auto;
   display: block;
   opacity: 0.95;
+    transform: translateX(calc(-1 * var(--stickyRightShift)));
 
   @media (max-width: 900px) {
     display: none; /* kill overlap on small screens */
@@ -221,7 +237,7 @@ const StickyArt = styled.div`
   /* left art */
   img.left {
     position: absolute;
-    left: var(--gutter);
+    left: var(--gutter) ;
     top: 60%;
     transform: translateY(-50%);
     width: clamp(200px, 28vw, 520px);   /* ← set exactly what you want */
@@ -231,9 +247,8 @@ const StickyArt = styled.div`
   /* right art */
   img.right {
     position: absolute;
-    right: var(--gutter);
     top: 30%;
-    right: -5%;
+    right: 0%;
     transform: translateY(-50%);
     width: clamp(140px, 18vw, 300px);   /* ← independent size */
     height: auto;
