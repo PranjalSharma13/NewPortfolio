@@ -137,7 +137,7 @@ const ParallaxRoot = styled(Parallax)`
 const Title = styled.h1`
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.5rem;
 `;
 
 const Wave = styled.span`
@@ -149,16 +149,14 @@ const Wave = styled.span`
 
 const FirstSection = styled.section`
   height: 100vh;
-  display: grid;
-  place-items: center;
-  text-align: center;
-  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 
   img {
-    width: 550px;
-    max-width: 90vw;
+    width: 400px;
     height: auto;
-    display: block;
   }
 `;
 
